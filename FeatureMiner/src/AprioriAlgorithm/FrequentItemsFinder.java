@@ -13,7 +13,7 @@ public class FrequentItemsFinder {
 
 	public static void main(String [] arg) throws IOException{
 
-		String input = fileToPath("contextPasquier99.txt");
+		String input = fileToPath("testInput.txt");
 		String output = ".//output.txt";  // the path for saving the frequent itemsets found
 		
 		double minsup = 0.4; // means a minsup of 2 transaction (we used a relative support)
