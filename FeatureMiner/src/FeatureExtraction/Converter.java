@@ -1,22 +1,31 @@
-package TransactionDataConverter;
+package FeatureExtraction;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Hashtable;
+import java.util.List;
 
 
 public class Converter {
-	private static Hashtable<Integer, String> dictionary = new Hashtable<Integer, String> ();
-	private static Hashtable<String, Integer> inverseDictionary = new Hashtable<String, Integer> ();
+	private Hashtable<Integer, String> dictionary = new Hashtable<Integer, String> ();
+	private Hashtable<String, Integer> inverseDictionary = new Hashtable<String, Integer> ();
+	private FileInputStream fstream;
 	
-	public static void main(String [] args) throws IOException {
-		FileInputStream fstream = new FileInputStream("testInput.txt");
+	public Converter(String inputFilePath) throws FileNotFoundException {
+		fstream = new FileInputStream(inputFilePath);
+	}
+	
+	public File getOutput() throws IOException {
+		 
 		File outputFile = new File("testOutput.txt");
 		outputFile.createNewFile();
 		FileWriter writer = new FileWriter(outputFile);
@@ -29,27 +38,33 @@ public class Converter {
 		    int count = 1;
 		    while ((line = br.readLine()) != null) {
 		    	String[] words = line.split(",");
-		    	
+		    	List<Integer> contents = new ArrayList<Integer> ();
+		    	//get the content of a line which is a list of ints
 		    	for(int i = 0; i < words.length; i++) {
 		    		String word = words[i];
 		    		
 		    		if(dictionary.contains(word)) {
 		    			//write the word with corresponding index
 		    			int index = inverseDictionary.get(word);
-		    			writer.write(index + " "); 
-		    			writer.flush();
+		    			contents.add(index);
 		    			continue;
 		    		}
 		    		
 		    		dictionary.put(count, word);
 		    		inverseDictionary.put(word, count);
+		    		contents.add(count);
 		    		
 		    		//substitute the word with corresponding index
-		    		writer.write(count + " ");
 		    		count++;
 		    	}
-		    
+		    	
+		    	Collections.sort(contents);
+		    	
+		    	for(Integer num : contents) {
+		    		writer.write(num + " ");
+		    	}
 		    	writer.write("\n");
+		    	writer.flush();
 		    }
 		}  
 		
@@ -60,6 +75,16 @@ public class Converter {
 		finally {
 			writer.close();
 		}
+		
+		return outputFile;
 	} 
+	
+	public String lookUpDictionary(int key) {
+		return dictionary.get(key);
+	}
+	
+	public int lookUpInverseDictionary(String key) {
+		return inverseDictionary.get(key);
+	}
 
 }
