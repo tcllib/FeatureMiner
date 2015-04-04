@@ -1,4 +1,4 @@
-package myProject;
+package AprioriAlgorithm;
 
 import java.util.Arrays;
 import java.util.Comparator;

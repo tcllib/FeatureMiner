@@ -1,4 +1,4 @@
-package myProject;
+package AprioriAlgorithm;
 
 /* This file is copyright (c) 2008-2012 Philippe Fournier-Viger
 * 
