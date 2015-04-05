@@ -8,6 +8,7 @@ import java.net.URL;
 
 import AprioriAlgorithm.AlgoApriori;
 import AprioriAlgorithm.FrequentItemsFinder;
+import AprioriAlgorithm.Itemsets;
 
 public class FeatureExtracctor {
 
@@ -18,13 +19,14 @@ public class FeatureExtracctor {
 		File outputFile = converter.getOutput();
 		
 		String input = outputFile.getAbsolutePath();
-		String output = ".//newoutput.txt";  // the path for saving the frequent itemsets found
+		String output = null;
 		
 		double minsup = 0.4; // means a minsup of 2 transaction (we used a relative support)
 		
 		// Applying the Apriori algorithm
 		AlgoApriori apriori = new AlgoApriori();
-		apriori.runAlgorithm(minsup, input, output);
+		Itemsets result = apriori.runAlgorithm(minsup, input, output);
 		apriori.printStats();
+		result.printItemsets(apriori.getDatabaseSize());
 	}
 }
