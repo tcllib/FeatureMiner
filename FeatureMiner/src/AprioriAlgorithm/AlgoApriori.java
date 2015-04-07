@@ -95,7 +95,7 @@ public class AlgoApriori {
 	 *               method will return the result.
 	 * @throws IOException exception if error while writting or reading the input/output file
 	 */
-	public Itemsets runAlgorithm(double minsup, String input, String output) throws IOException {
+	public Itemsets runAlgorithm(double minsup, List<List<Integer>> input, String output) throws IOException {
 		
 		// if the user want to keep the result into memory
 		if(output == null){
@@ -125,6 +125,32 @@ public class AlgoApriori {
 		
 		database = new ArrayList<int[]>(); // the database in memory (intially empty)
 		
+		
+		//new implementation which take a two dimentional array as a input
+		for (int i = 0; i < input.size(); i++) {
+			List<Integer> trans = input.get(i);
+			int[] transaction = new int[trans.size()];
+			
+			for(int j = 0; j < transaction.length; j++) {
+				// increase the support count
+				Integer item = trans.get(j);
+				transaction[j] = item;
+				Integer count = mapItemCount.get(item);
+				if (count == null) {
+					mapItemCount.put(item, 1);
+				} else {
+					mapItemCount.put(item, ++count);
+				}
+			}
+			
+			// add the transaction to the database
+			database.add(transaction);
+			// increase the number of transaction
+			databaseSize++;
+		}
+		
+		
+		/*old implementation which take a file as input
 		// scan the database to load it into memory and count the support of each single item at the same time
 		BufferedReader reader = new BufferedReader(new FileReader(input));
 		String line;
@@ -164,6 +190,8 @@ public class AlgoApriori {
 		}
 		// close the input file
 		reader.close();
+		*/
+		
 		
 		// conver the minimum support as a percentage to a 
 		// relative minimum support as an integer
@@ -279,7 +307,7 @@ public class AlgoApriori {
 			}
 			// we will generate larger itemsets next.
 			k++;
-		}while(level.isEmpty() == false);
+		}while(level.isEmpty() == false && k <= 3); //end the loop if there are more than 3 words
 
 		// record end time
 		endTimestamp = System.currentTimeMillis();

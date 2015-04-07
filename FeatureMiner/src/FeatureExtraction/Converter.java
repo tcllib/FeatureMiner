@@ -19,13 +19,49 @@ public class Converter {
 	private Hashtable<Integer, String> dictionary = new Hashtable<Integer, String> ();
 	private Hashtable<String, Integer> inverseDictionary = new Hashtable<String, Integer> ();
 	private FileInputStream fstream;
+	private List<List<String>> inputLists;
+	private List<List<Integer>> outputLists;
 	
-	public Converter(String inputFilePath) throws FileNotFoundException {
-		fstream = new FileInputStream(inputFilePath);
+	public Converter( List<List<String>> input, String inputFilePath) throws FileNotFoundException {
+		//fstream = new FileInputStream(inputFilePath);
+		inputLists = input;
+		outputLists = new ArrayList<List<Integer>>();
+	}
+	
+	public List<List<Integer>> getOutputList() {
+		
+		int count = 1;
+		for(List<String> words : inputLists) {
+			List<Integer> contents = new ArrayList<Integer> ();
+			
+			for(int i = 0; i < words.size(); i++) {
+	    		String word = words.get(i);
+	    		
+	    		if(dictionary.contains(word)) {
+	    			//write the word with corresponding index
+	    			int index = inverseDictionary.get(word);
+	    			contents.add(index);
+	    			continue;
+	    		}
+	    		
+	    		dictionary.put(count, word);
+	    		inverseDictionary.put(word, count);
+	    		contents.add(count);
+	    		
+	    		//substitute the word with corresponding index
+	    		count++;
+	    	}
+	    	
+	    	Collections.sort(contents);
+	    	outputLists.add(contents);
+			
+		}
+		
+		return outputLists;
 	}
 	
 	public File getOutput() throws IOException {
-		 
+		
 		File outputFile = new File("testOutput.txt");
 		outputFile.createNewFile();
 		FileWriter writer = new FileWriter(outputFile);
