@@ -340,6 +340,7 @@ public class AlgoApriori {
 		
 	}
 	
+	//Used to remove all subsets which are considered meaningless
 	private void redundancyPruning() {
 		//create an itemsets which contains all redundant itemsets
 		Itemsets redundantSets = new Itemsets("Redundant");
