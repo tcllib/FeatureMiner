@@ -1,5 +1,6 @@
 package AprioriAlgorithm;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -162,5 +163,25 @@ public class Itemset extends AbstractOrderedItemset{
 	public Itemset intersection(Itemset itemset2) {
 		int [] intersection = ArraysAlgos.intersectTwoSortedArrays(this.getItems(), itemset2.getItems());
 		return new Itemset(intersection);
+	}
+	
+	public boolean isSubset(Itemset large) {
+		boolean isSubset = false;
+		int[] largeItems = large.getItems();
+		int[] smallItems = this.getItems();
+		List<Integer> newLargeItems = intToInteger(largeItems);
+		List<Integer> newsmallItems = intToInteger(smallItems);
+
+		isSubset = newLargeItems.containsAll(newsmallItems);
+		
+		return isSubset;
+	}
+	
+	private List<Integer> intToInteger(int[] input) {
+		List<Integer> list = new ArrayList<Integer> ();
+		for(int i = 0; i < input.length; i++) {
+			list.add(input[i]);
+		}
+		return list;
 	}
 }

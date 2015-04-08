@@ -67,7 +67,7 @@ public class FeatureExtracctor {
 		
 		// Applying the Apriori algorithm
 		AlgoApriori apriori = new AlgoApriori();
-		Itemsets result = apriori.runAlgorithm(minsup, outputList, output);
+		Itemsets result = apriori.runAlgorithm(minsup, outputList, output, true);
 		//apriori.printStats();
 		//result.printItemsets(apriori.getDatabaseSize());
 		

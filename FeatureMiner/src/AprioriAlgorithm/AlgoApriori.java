@@ -95,7 +95,7 @@ public class AlgoApriori {
 	 *               method will return the result.
 	 * @throws IOException exception if error while writting or reading the input/output file
 	 */
-	public Itemsets runAlgorithm(double minsup, List<List<Integer>> input, String output) throws IOException {
+	public Itemsets runAlgorithm(double minsup, List<List<Integer>> input, String output, boolean isPruned) throws IOException {
 		
 		// if the user want to keep the result into memory
 		if(output == null){
@@ -319,6 +319,11 @@ public class AlgoApriori {
 			writer.close();
 		}
 		
+		if(isPruned) {
+			compactnessPruning();
+			redundancyPruning();
+		}
+		
 		return patterns;
 	}
 
@@ -328,6 +333,42 @@ public class AlgoApriori {
 	 */
 	public int getDatabaseSize() {
 		return databaseSize;
+	}
+	
+	
+	private void compactnessPruning() {
+		
+	}
+	
+	private void redundancyPruning() {
+		//create an itemsets which contains all redundant itemsets
+		Itemsets redundantSets = new Itemsets("Redundant");
+		List<List<Itemset>> levels = patterns.getLevels();
+		List<Itemset> level1 = levels.get(1);
+		List<Itemset> level2 = levels.get(2);
+		List<Itemset> level3 = levels.get(3);
+		
+		//check if any redundancy in level1
+		for(Itemset small : level1) {
+			for(Itemset large: level2) {
+				if(small.isSubset(large)) {
+					redundantSets.addItemset(small, 1);
+					break;
+				}				
+			}
+		}
+		
+		for(Itemset small : level2) {
+			for(Itemset large: level3) {
+				if(small.isSubset(large)) {
+					redundantSets.addItemset(small, 2);
+					break;
+				}				
+			}
+		}
+		
+		patterns.removeAll(redundantSets);
+		//redundantSets.printItemsets(redundantSets.getItemsetsCount());
 	}
 
 	/**

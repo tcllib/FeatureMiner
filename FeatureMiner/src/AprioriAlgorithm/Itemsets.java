@@ -113,4 +113,17 @@ public class Itemsets{
 	public void decreaseItemsetCount() {
 		itemsetsCount--;
 	}
+	
+	//remove all elements from removalbes which are also included in current Itemsets
+	//works only for level 1 and level 2
+	//and it is assumed that removalbes is a subset of current Itemsets
+	public void removeAll(Itemsets removables) {
+		for (int i = 1; i <= 2; i++) {
+			List<Itemset> currentLevel = this.getLevels().get(i);
+			List<Itemset> removableLevel = removables.getLevels().get(i);
+			for(Itemset removable : removableLevel) {
+				currentLevel.remove(removable);
+			}
+		}
+	}
 }
