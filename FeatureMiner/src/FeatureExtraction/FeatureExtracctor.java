@@ -22,8 +22,8 @@ public class FeatureExtracctor {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		//extract potential features
-		String inputFile = "testInput.txt";
-		Tagger myTagger = new Tagger("C:\\Users\\Jason\\Desktop\\grad 2\\data mining\\group\\data\\test");
+		String inputFile = "C:\\Users\\Jason\\Desktop\\grad 2\\data mining\\group\\data\\test";
+		Tagger myTagger = new Tagger(inputFile);
 		List<ArrayList<Bag>> reviews = myTagger.getReviews();
 		List<List<String>> input = new ArrayList<List<String>> ();
 		for(ArrayList<Bag> bags : reviews) {
