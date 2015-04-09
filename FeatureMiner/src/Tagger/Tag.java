@@ -27,7 +27,7 @@ public class Tag {
 		for(int i=0;i<sen.length;i++){
 			//		System.out.println("part:"+sen[i]);
 			if(sen[i].endsWith("_NN")){
-			noun.add(sen[i].substring(0,sen[i].length()-3));
+			noun.add(sen[i].substring(0,sen[i].length()-3).toLowerCase());
 		}
 	}
 	
