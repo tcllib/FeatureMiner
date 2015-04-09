@@ -345,30 +345,36 @@ public class AlgoApriori {
 		//create an itemsets which contains all redundant itemsets
 		Itemsets redundantSets = new Itemsets("Redundant");
 		List<List<Itemset>> levels = patterns.getLevels();
-		List<Itemset> level1 = levels.get(1);
-		List<Itemset> level2 = levels.get(2);
-		List<Itemset> level3 = levels.get(3);
-		
-		//check if any redundancy in level1
-		for(Itemset small : level1) {
-			for(Itemset large: level2) {
-				if(small.isSubset(large)) {
-					redundantSets.addItemset(small, 1);
-					break;
-				}				
+	
+		if(levels.size() >= 3) {
+			List<Itemset> level1 = levels.get(1);
+			List<Itemset> level2 = levels.get(2);
+			
+			//check if any redundancy in level1
+			for(Itemset small : level1) {
+				for(Itemset large: level2) {
+					if(small.isSubset(large)) {
+						redundantSets.addItemset(small, 1);
+						break;
+					}				
+				}
+			}
+			
+			if(levels.size() >= 4) {
+				List<Itemset> level3 = levels.get(3);
+				
+				for(Itemset small : level2) {
+					for(Itemset large: level3) {
+						if(small.isSubset(large)) {
+							redundantSets.addItemset(small, 2);
+							break;
+						}				
+					}
+				}
 			}
 		}
-		
-		for(Itemset small : level2) {
-			for(Itemset large: level3) {
-				if(small.isSubset(large)) {
-					redundantSets.addItemset(small, 2);
-					break;
-				}				
-			}
-		}
-		
-		patterns.removeAll(redundantSets);
+				
+		patterns.removeAll(redundantSets, redundantSets.getLevelsCount() - 2);
 		//redundantSets.printItemsets(redundantSets.getItemsetsCount());
 	}
 

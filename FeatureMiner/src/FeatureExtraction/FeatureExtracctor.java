@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Tagger.Bag;
+import Tagger.Tagger;
 import AprioriAlgorithm.AlgoApriori;
 import AprioriAlgorithm.Itemset;
 import AprioriAlgorithm.Itemsets;
@@ -19,8 +21,32 @@ public class FeatureExtracctor {
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		//String inputFilePath = "testOutput.txt";
+		//extract potential features
 		String inputFile = "testInput.txt";
+		Tagger myTagger = new Tagger("C:\\Users\\Jason\\Desktop\\grad 2\\data mining\\group\\data\\test");
+		List<ArrayList<Bag>> reviews = myTagger.getReviews();
+		List<List<String>> input = new ArrayList<List<String>> ();
+		for(ArrayList<Bag> bags : reviews) {
+			for(Bag bag : bags) {
+				if (bag.features.size() != 0) {
+					input.add(bag.features);
+					System.out.println(bag.features);
+				}
+			}
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*
+		//String inputFilePath = "testOutput.txt";
+		
 		
 		
 		//old implementation
@@ -58,12 +84,13 @@ public class FeatureExtracctor {
 		//}
 		
 		reader.close();
+		*/
 		
 		Converter converter = new Converter(input, inputFile);
 		List<List<Integer>> outputList = converter.getOutputList();
 		String output = null;
 		
-		double minsup = 0.4; // means a minsup of 2 transaction (we used a relative support)
+		double minsup = 0.01; // means a minsup of 2 transaction (we used a relative support)
 		
 		// Applying the Apriori algorithm
 		AlgoApriori apriori = new AlgoApriori();
