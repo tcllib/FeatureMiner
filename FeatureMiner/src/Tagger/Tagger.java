@@ -33,8 +33,8 @@ public class Tagger {
 		}
 	}
 	
-	public static ArrayList<ArrayList<Bag>> getReviews(){
-		ArrayList<ArrayList<Bag>> pro=new ArrayList();
+	public ArrayList<ArrayList<Bag>> getReviews(){
+		ArrayList<ArrayList<Bag>> pro = new ArrayList<ArrayList<Bag>> ();
 		for(JSONObject reviews : productReviews) {
 			JSONArray array=reviews.getJSONArray("Reviews");
 			int size = array.size();
@@ -44,20 +44,21 @@ public class Tagger {
 				JSONObject jsonObject = array.getJSONObject(i);
 				//System.out.println("[" + i + "]content=" + jsonObject.get("Content"));
 				Tag tag1=new Tag();
-				ArrayList<Bag> rev = new ArrayList();
-				String t1 = tag1.analysis(jsonObject.get("Content").toString());
-				String t3 = jsonObject.get("Content").toString();
-				String[] p1 = t1.split("\\.\\_\\.");
-							
+				ArrayList<Bag> rev=new ArrayList<Bag> ();
+				String ttt="._.";
+
+				String t1=tag1.analysis(jsonObject.get("Content").toString());
+				String t3=jsonObject.get("Content").toString();
+				String[] p1=t1.split("\\.\\_\\.");
 				for(int y=0;y<p1.length;y++){
 					Bag b1=new Bag();
 					b1.setID(y);
-					b1.setSentence(p1[y]);
+					b1.setSentence(tag1.trans(p1[y]));
 					b1.features=tag1.collect(p1[y]);
 					rev.add(b1);
 				}
-							
-				pro.add(rev);
+				
+				pro.add(rev);			
 			}
 		}
 		

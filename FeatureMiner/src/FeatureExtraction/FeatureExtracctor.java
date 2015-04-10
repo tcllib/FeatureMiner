@@ -9,6 +9,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.List;
 
 import Tagger.Bag;
@@ -23,26 +26,17 @@ public class FeatureExtracctor {
 		// TODO Auto-generated method stub
 		//extract potential features
 		String inputFile = "C:\\Users\\Jason\\Desktop\\grad 2\\data mining\\group\\data\\test";
-		Tagger myTagger = new Tagger(inputFile);
+		Tagger myTagger = new Tagger("C:\\Users\\Jason\\Desktop\\grad 2\\data mining\\group\\data\\test");
 		List<ArrayList<Bag>> reviews = myTagger.getReviews();
 		List<List<String>> input = new ArrayList<List<String>> ();
 		for(ArrayList<Bag> bags : reviews) {
 			for(Bag bag : bags) {
 				if (bag.features.size() != 0) {
 					input.add(bag.features);
-					System.out.println(bag.features);
+					//System.out.println(bag.features);
 				}
 			}
-		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		}	
 		
 		/*
 		//String inputFilePath = "testOutput.txt";
@@ -102,6 +96,98 @@ public class FeatureExtracctor {
 		int patternCount = 0;
 		int levelCount = 0;
 		List<List<Itemset>> levels = result.getLevels();
+		
+		//get the right order
+		String targetSentence = "";
+		
+		//test
+		String test = "i just have a few complaints about this pb : "
+				+ "poor battery life - we only get about 1 hour of use if we are using it.";
+		
+		System.out.println(test.indexOf("battery") + " " + test.indexOf("life"));
+		
+		int levelSize = levels.size();
+		//System.out.println("------------------size is " + levelSize);
+		for (int i = 2; i <= levelSize - 1; i++) {
+			String sentence = "";
+			List<Itemset> list = levels.get(i);
+			for (int c = 0; c < list.size(); c++) {
+			//for (Itemset itemset : levels.get(i)) {
+				Itemset itemset = list.get(c);
+				List<Pair<Integer, String>> words = new ArrayList<Pair<Integer, String>> ();
+				
+				searchloop:
+				for(ArrayList<Bag> bags : reviews) {
+					for(Bag bag : bags) {
+						sentence = bag.getSentence().toLowerCase();
+						words.clear();
+						//System.out.println(sentence);
+						for (int j = 0; j < itemset.size(); j++) {
+							String word = converter.lookUpDictionary(itemset.get(j));
+							int index = sentence.indexOf(word);
+							Pair<Integer, String> pair = new Pair<Integer, String> (index, word);
+							words.add(pair);
+						}
+
+						boolean containsAll = true;
+						//Enumeration<Integer> enumKey = wordsTable.keys();
+						//while(enumKey.hasMoreElements()) {
+						//	Integer key = enumKey.nextElement();
+						//	if (key >= 0) {
+						//		containsAll = false;
+						//		break;
+						//	}
+						//}
+						for(Pair<Integer, String> pair : words) {
+							if(pair.getLeft() == -1) {
+								containsAll = false;
+								break;
+							}
+						}
+						
+						if(containsAll) {
+							System.out.println("find it");
+							List<Integer> indexes = new ArrayList<Integer> ();
+							
+							for (Pair<Integer, String> pair : words) {
+								indexes.add(pair.getLeft());
+								System.out.println("word is " + pair.getRight());
+							}
+							
+							Hashtable<Integer, String> wordsTable = new Hashtable<Integer, String> ();
+							for(Pair<Integer, String> pair : words) {
+								wordsTable.put(pair.getLeft(), pair.getRight());
+							}
+							
+							Collections.sort(indexes);
+							//itemset.clear();
+							Itemset newItemset = new Itemset();
+							int support = itemset.support;
+							List<Integer> newItems = new ArrayList<Integer>();
+							for(Integer ind : indexes) {
+								int IntItem = converter.lookUpInverseDictionary(wordsTable.get(ind));
+								newItems.add(IntItem);
+							}
+							
+							itemset = new Itemset(newItems, 0);
+							
+							//for(Integer index : indexes) {
+							//	System.out.println("index is " + index);
+							//	int IntItem = converter.lookUpInverseDictionary(wordsTable.get(index));
+							//	newItemset.addItem(IntItem);
+							//	
+							//	itemset = new Itemset(newItemset, support);
+							//}
+							//itemset = newItemset;
+							break searchloop;
+						}
+						
+					}	
+				}
+				list.set(c, itemset);
+			}
+			levels.set(i, list);
+		}
 
 		//print the result
 		for (List<Itemset> level : levels) {
@@ -109,7 +195,7 @@ public class FeatureExtracctor {
 			System.out.println("  L" + levelCount + " ");
 			// for each itemset
 			for (Itemset itemset : level) {
-				Arrays.sort(itemset.getItems());
+				//Arrays.sort(itemset.getItems());
 				// print the itemset
 				System.out.print("  pattern " + patternCount + ":  ");
 				//itemset.print();

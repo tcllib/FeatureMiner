@@ -20,13 +20,4 @@ public class Pair<T, K> {
 	public K getRight() {
 		return this.right;
 	}
-	
-	public void setLeft(T l) {
-		this.left = l;
-	}
-	
-	public void setRight(K r) {
-		this.right = r;
-	}
-
 }
