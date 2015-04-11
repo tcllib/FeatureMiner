@@ -184,18 +184,4 @@ public class Itemset extends AbstractOrderedItemset{
 		}
 		return list;
 	}
-	
-	public void clear() {
-		itemset = new int[]{};
-	}
-	
-	public void addItem(int item) {
-		int length = itemset.length;
-		int[] newInts = new int[length + 1];
-		for (int i = 0; i < length; i++) {
-			newInts[i] = itemset[i];
-		}
-		newInts[newInts.length - 1] = item;
-		itemset = newInts;
-	}
 }

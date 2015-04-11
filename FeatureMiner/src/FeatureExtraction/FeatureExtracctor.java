@@ -22,12 +22,16 @@ import AprioriAlgorithm.Itemsets;
 
 public class FeatureExtracctor {
 
+	private static List<List<Itemset>> levels;
+	private static List<ArrayList<Bag>>  reviews;
+	private static Converter converter;
+	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		//extract potential features
 		String inputFile = "C:\\Users\\Jason\\Desktop\\grad 2\\data mining\\group\\data\\test";
 		Tagger myTagger = new Tagger("C:\\Users\\Jason\\Desktop\\grad 2\\data mining\\group\\data\\test");
-		List<ArrayList<Bag>> reviews = myTagger.getReviews();
+		reviews = myTagger.getReviews();
 		List<List<String>> input = new ArrayList<List<String>> ();
 		for(ArrayList<Bag> bags : reviews) {
 			for(Bag bag : bags) {
@@ -80,7 +84,7 @@ public class FeatureExtracctor {
 		reader.close();
 		*/
 		
-		Converter converter = new Converter(input, inputFile);
+		converter = new Converter(input, inputFile);
 		List<List<Integer>> outputList = converter.getOutputList();
 		String output = null;
 		
@@ -95,17 +99,41 @@ public class FeatureExtracctor {
 		System.out.println("--------------");
 		int patternCount = 0;
 		int levelCount = 0;
-		List<List<Itemset>> levels = result.getLevels();
+		levels = result.getLevels();
 		
 		//get the right order
 		String targetSentence = "";
 		
-		//test
-		String test = "i just have a few complaints about this pb : "
-				+ "poor battery life - we only get about 1 hour of use if we are using it.";
-		
-		System.out.println(test.indexOf("battery") + " " + test.indexOf("life"));
-		
+		//reoder the itemsets so that they appear in the right order
+		reOrder();
+
+		//print the result
+		for (List<Itemset> level : levels) {
+			// print how many items are contained in this level
+			System.out.println("  L" + levelCount + " ");
+			// for each itemset
+			for (Itemset itemset : level) {
+				//Arrays.sort(itemset.getItems());
+				// print the itemset
+				System.out.print("  pattern " + patternCount + ":  ");
+				//itemset.print();
+				int[] items = itemset.getItems();
+				for(int i = 0; i < items.length; i++) {
+					String word = converter.lookUpDictionary(items[i]);
+					System.out.print(word + " ");
+				}
+				// print the support of this itemset
+				System.out.print("support :  "
+						+ itemset.getRelativeSupportAsString(apriori.getDatabaseSize()));
+				patternCount++;
+				System.out.println(" ");
+				
+			}
+			levelCount++;
+		}
+	}
+	
+	private static void reOrder() {
 		int levelSize = levels.size();
 		//System.out.println("------------------size is " + levelSize);
 		for (int i = 2; i <= levelSize - 1; i++) {
@@ -146,12 +174,10 @@ public class FeatureExtracctor {
 						}
 						
 						if(containsAll) {
-							System.out.println("find it");
 							List<Integer> indexes = new ArrayList<Integer> ();
 							
 							for (Pair<Integer, String> pair : words) {
 								indexes.add(pair.getLeft());
-								System.out.println("word is " + pair.getRight());
 							}
 							
 							Hashtable<Integer, String> wordsTable = new Hashtable<Integer, String> ();
@@ -169,7 +195,7 @@ public class FeatureExtracctor {
 								newItems.add(IntItem);
 							}
 							
-							itemset = new Itemset(newItems, 0);
+							itemset = new Itemset(newItems, support);
 							
 							//for(Integer index : indexes) {
 							//	System.out.println("index is " + index);
@@ -187,31 +213,6 @@ public class FeatureExtracctor {
 				list.set(c, itemset);
 			}
 			levels.set(i, list);
-		}
-
-		//print the result
-		for (List<Itemset> level : levels) {
-			// print how many items are contained in this level
-			System.out.println("  L" + levelCount + " ");
-			// for each itemset
-			for (Itemset itemset : level) {
-				//Arrays.sort(itemset.getItems());
-				// print the itemset
-				System.out.print("  pattern " + patternCount + ":  ");
-				//itemset.print();
-				int[] items = itemset.getItems();
-				for(int i = 0; i < items.length; i++) {
-					String word = converter.lookUpDictionary(items[i]);
-					System.out.print(word + " ");
-				}
-				// print the support of this itemset
-				System.out.print("support :  "
-						+ itemset.getRelativeSupportAsString(apriori.getDatabaseSize()));
-				patternCount++;
-				System.out.println(" ");
-				
-			}
-			levelCount++;
 		}
 	}
 }
