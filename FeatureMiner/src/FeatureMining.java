@@ -23,10 +23,10 @@ public class FeatureMining {
 
 
 		// directory containing our review database (json files) 
-		String dataPath = "D:\\Sachou\\UCL\\FeatureMiner\\data\\small_laptop_data";
+		String dataPath = "C:\\Users\\Jason\\Desktop\\grad 2\\data mining\\group\\data\\test";
 
 		// path to product reviews (several reviews relative to the same product, in a json file)
-		String reviewPath = "D:\\Sachou\\UCL\\FeatureMiner\\data\\full_laptop_data\\B004O3BIBY.json";
+		String reviewPath = "C:\\Users\\Jason\\Desktop\\grad 2\\data mining\\group\\data\\laptops\\B0000AZ0O0.json";
 
 		// extracting the possible features from our database
 		FeatureExtractor extractor = new FeatureExtractor();
