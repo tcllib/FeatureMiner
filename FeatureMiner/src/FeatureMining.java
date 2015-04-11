@@ -31,6 +31,10 @@ public class FeatureMining {
 		// extracting the possible features from our database
 		FeatureExtractor extractor = new FeatureExtractor();
 		ArrayList<String> features = extractor.extractFeatures(dataPath);
+		//print features
+		for (String feature : features) {
+			System.out.println(feature);
+		}
 
 		ArrayList<String> commonNouns = readFile("frequent_nouns", 1000);
 		ArrayList<String> cleanFeatures = new ArrayList<String>();

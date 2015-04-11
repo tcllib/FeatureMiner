@@ -114,7 +114,6 @@ public class FeatureExtractor {
 			// System.out.println("  L" + levelCount + " ");
 			// for each itemset
 			for (Itemset itemset : level) {
-				Arrays.sort(itemset.getItems());
 				// print the itemset
 				// System.out.print("  pattern " + patternCount + ":  ");
 				//itemset.print();
