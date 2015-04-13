@@ -23,10 +23,10 @@ public class FeatureMining {
 
 
 		// directory containing our review database (json files) 
-		String dataPath = "C:\\Users\\Jason\\Desktop\\grad 2\\data mining\\group\\data\\test";
+		String dataPath = "D:\\Sachou\\UCL\\FeatureMiner\\data\\small_laptop_data";
 
 		// path to product reviews (several reviews relative to the same product, in a json file)
-		String reviewPath = "C:\\Users\\Jason\\Desktop\\grad 2\\data mining\\group\\data\\laptops\\B0000AZ0O0.json";
+		String reviewPath = "D:\\Sachou\\UCL\\FeatureMiner\\data\\full_laptop_data\\B00AYA40UC.json";
 
 		// extracting the possible features from our database
 		FeatureExtractor extractor = new FeatureExtractor();
@@ -36,7 +36,7 @@ public class FeatureMining {
 			System.out.println(feature);
 		}
 
-		ArrayList<String> commonNouns = readFile("frequent_nouns", 1000);
+		ArrayList<String> commonNouns = readFile("frequent_nouns", 500);
 		ArrayList<String> cleanFeatures = new ArrayList<String>();
 		
 		
@@ -45,6 +45,10 @@ public class FeatureMining {
 			for(String noun: commonNouns){
 				//System.out.println(noun);
 				if(feat.equals(noun)){
+					toRemove=true;
+					System.out.println("Feature \""+feat+"\" was filtered out as too common.");
+				} else if (feat.endsWith("s") && feat.length()>1 && feat.substring(0, feat.length()-1).equals(noun)) {
+					// testing to see if it was a plural of a noun to remove
 					toRemove=true;
 					System.out.println("Feature \""+feat+"\" was filtered out as too common.");
 				}
@@ -57,6 +61,9 @@ public class FeatureMining {
 		// loading up the reviews, each one in a string
 		ArrayList<String> reviews = getRawReviews(reviewPath);
 
+		for(String r: reviews){
+			System.out.println(r+"\n\n");
+		}
 		// finding the opinion for each review
 		// The opinion of a review is an arraylist of (sentence, sentiment)
 		SentimentAnalyser analyser = new SentimentAnalyser();
@@ -103,5 +110,4 @@ public class FeatureMining {
 		}
 		return(lines);
 	}
-
 }

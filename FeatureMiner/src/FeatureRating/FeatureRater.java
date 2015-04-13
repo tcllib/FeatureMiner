@@ -23,10 +23,15 @@ public class FeatureRater {
 		for(Opinion op: ops){
 			for(Sentiment pair: op) {
 				sentence = pair.getLeft();
+				Boolean hasFeature = false;
 				for(String feat: features){
 					if(sentence.contains(feat)) {
 						summary.add(feat, pair);
+						hasFeature=true;
 					}
+				}
+				if(!hasFeature){
+					summary.add("miscalleneous", pair);
 				}
 			}
 		}
