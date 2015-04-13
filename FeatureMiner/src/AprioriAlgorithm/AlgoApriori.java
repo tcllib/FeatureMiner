@@ -343,7 +343,7 @@ public class AlgoApriori {
 		//create an itemsets which contains all redundant itemsets
 		Itemsets redundantSets = new Itemsets("Redundant");
 		List<List<Itemset>> levels = patterns.getLevels();
-	
+		
 		if(levels.size() >= 3) {
 			List<Itemset> level1 = levels.get(1);
 			List<Itemset> level2 = levels.get(2);
@@ -360,7 +360,15 @@ public class AlgoApriori {
 			
 			if(levels.size() >= 4) {
 				List<Itemset> level3 = levels.get(3);
-				
+				for(Itemset small : level1) {
+					for(Itemset large: level3) {
+						if(small.isSubset(large)) {
+							redundantSets.addItemset(small, 1);
+							break;
+						}				
+					}
+				}
+			
 				for(Itemset small : level2) {
 					for(Itemset large: level3) {
 						if(small.isSubset(large)) {
@@ -371,7 +379,7 @@ public class AlgoApriori {
 				}
 			}
 		}
-				
+
 		patterns.removeAll(redundantSets, redundantSets.getLevelsCount() - 1);
 		//redundantSets.printItemsets(redundantSets.getItemsetsCount());
 	}
