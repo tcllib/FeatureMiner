@@ -21,4 +21,8 @@ public class Sentiment extends Pair<String, Integer> {
 		return(getRight());
 	}
 
+	public String getStringRating() {
+		return getRating()>2?"positive":"negative";
+	}
+
 }

@@ -28,4 +28,24 @@ public class Opinion extends ArrayList<Sentiment> {
 		}
 		return (mean/this.size());
 	}
+	
+	public int getPos() {
+		int count = 0;
+		for(Pair<String, Integer> op: this){	
+			if (op.getRight()>2) {
+				count++;
+			}
+		}
+		return (count);
+	}
+	
+	public int getNeg() {
+		int count = 0;
+		for(Pair<String, Integer> op: this){	
+			if (op.getRight()<=2) {
+				count++;
+			}
+		}
+		return (count);
+	}
 }
