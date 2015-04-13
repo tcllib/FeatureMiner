@@ -1,6 +1,7 @@
 package Tagger;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,10 +13,16 @@ public class Tagger {
 	private List<JSONObject> productReviews;
 	private Tag tag;
 
-	public Tagger(String filePath) {
+	public Tagger(String filePath) throws FileNotFoundException {
 		productReviews = new ArrayList<JSONObject> ();
 		File dir = new File(filePath);
 
+		if(!dir.exists()){
+			throw new FileNotFoundException("Impossible to tag reviews: directory "+filePath+ " does not exist.");
+		} else if (!dir.isDirectory()) {
+			throw new FileNotFoundException("Impossible to tag reviews: "+filePath+" is not a directory.");
+		}
+		
 		for (File child : dir.listFiles()) {
 			if (".".equals(child.getName()) || "..".equals(child.getName())) {
 				continue; // Ignore the self and parent aliases.
