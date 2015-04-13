@@ -23,35 +23,8 @@ import Tagger.Util;
  */
 public class FeatureMining {
 
-	ArrayList<String> features; 
-	SentimentAnalyser analyser = new SentimentAnalyser();
-	
-
-	public static void main(String[] args) throws IOException {
-
-		// directory containing our review database (json files) 
-		String dataPath = "D:\\Sachou\\UCL\\FeatureMiner\\data\\small_laptop_data";
-
-		// path to product reviews (several reviews relative to the same product, in a json file)
-		String reviewPath = "D:\\Sachou\\UCL\\FeatureMiner\\data\\full_laptop_data\\B004EWEZKQ.json";
-
-		// to print intermediate messages
-		Boolean verbose = true;
-
-		// the features are computed during initialization
-		FeatureMining miner = new FeatureMining(dataPath);
-		// one could also directly provide the arrayList of features
-		
-		// Computing the summary
-		Summary summary1 = miner.mineFeatures(reviewPath, verbose);
-		System.out.println(summary1);
-		
-		// computing another summary 
-		// (the feature extraction has already been done)
-		reviewPath = "D:\\Sachou\\UCL\\FeatureMiner\\data\\full_laptop_data\\B009AEPI90.json";
-		Summary summary2 = miner.mineFeatures(reviewPath, false);
-		System.out.println(summary2);
-	}
+	private ArrayList<String> features; 
+	private SentimentAnalyser analyser = new SentimentAnalyser();
 
 	public FeatureMining(String dataPath) throws IOException {
 		// extracting the possible features from the database
@@ -163,5 +136,17 @@ public class FeatureMining {
 			br.close();
 		}
 		return(lines);
+	}
+	
+	public ArrayList<String> getFeatures() {
+		return features;
+	}
+
+	public void setFeatures(ArrayList<String> features) {
+		this.features = features;
+	}
+
+	public void setAnalyser(SentimentAnalyser analyser) {
+		this.analyser = analyser;
 	}
 }
