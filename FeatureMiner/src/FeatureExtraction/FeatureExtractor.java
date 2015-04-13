@@ -35,7 +35,6 @@ public class FeatureExtractor {
 	}
 
 	public static void main(String[] args) throws IOException {
-		String inputPath = "D:\\Sachou\\UCL\\FeatureMiner\\data\\one_laptop_review";
 		String inputPath2 = "C:\\Users\\Jason\\Desktop\\grad 2\\data mining\\group\\data\\test";
 		
 		FeatureExtractor extractor = new FeatureExtractor();

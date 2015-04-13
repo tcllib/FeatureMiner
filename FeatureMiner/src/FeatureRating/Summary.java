@@ -30,7 +30,7 @@ public class Summary extends HashMap<String, Opinion> {
 		String str = "";
 		for(String feat: this.keySet()) {
 			Opinion op = this.get(feat);
-			str += "### "+feat+"\t : " +op.getPos()+ "positive / " + op.getNeg() + " negative ###"+"\n";
+			str += "### "+feat+" : \t" +op.getPos()+ " positive / " + op.getNeg() + " negative ###"+"\n";
 			for(Sentiment sen: op){
 				str += "- "+sen.getSentence()+"\n";
 				str += "--> "+sen.getStringRating()+"\n";
