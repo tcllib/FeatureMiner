@@ -25,7 +25,8 @@ public class FeatureRater {
 				sentence = pair.getLeft();
 				Boolean hasFeature = false;
 				for(String feat: features){
-					if(sentence.contains(feat)) {
+					// looking for feature "feat" as a whole word in the sentence
+					if(sentence.matches(".*\\b"+feat+"\\b.*")) {
 						summary.add(feat, pair);
 						hasFeature=true;
 					}
