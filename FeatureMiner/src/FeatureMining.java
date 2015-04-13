@@ -37,9 +37,23 @@ public class FeatureMining {
 	}
 
 	public FeatureMining() {
+		this.features=null;
 	}
-
+	
+	/**
+	 *  Main method for this class: summarize a review given a database of similar reviews.
+	 *  
+	 * @param reviewPath:  the path to a single review to summarize
+	 * @param verbose: boolean indicating whether to print intermediate messages
+	 * @return A summary of the review (see FeatureRating.Summary)
+	 * @throws IOException
+	 */
 	public Summary mineFeatures(String reviewPath, Boolean verbose) throws IOException {
+		
+		if(features==null){
+			throw new IOException("The features were not initialized");
+		}
+		
 		//print features
 		if(verbose)
 			for (String feature : features) {
