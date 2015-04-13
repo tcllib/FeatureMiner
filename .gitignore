@@ -1,7 +1,5 @@
-data/
 stanford-corenlp-full-2015-01-30/
 FeatureMiner/lib/stanford-corenlp-3.5.1-models.jar
 mining-opinion-features.pdf
-*.tsv
 frequent_word_dict.csv
 FeatureMiner/bin/
